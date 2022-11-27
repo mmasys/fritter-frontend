@@ -1,6 +1,8 @@
 import type {NextFunction, Request, Response} from 'express';
 import express from 'express';
 import FreetCollection from './collection';
+import LimitCollection from '../limit/collection';
+import UserCollection from '../user/collection';
 import * as userValidator from '../user/middleware';
 import * as freetValidator from '../freet/middleware';
 import * as util from './util';
@@ -68,10 +70,14 @@ router.post(
   async (req: Request, res: Response) => {
     const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
     const freet = await FreetCollection.addOne(userId, req.body.content);
+    await LimitCollection.updateCanPost(userId);
+    const user = await UserCollection.findOneByUserId(userId);
+    const {canPost} = user;
 
     res.status(201).json({
       message: 'Your freet was created successfully.',
-      freet: util.constructFreetResponse(freet)
+      freet: util.constructFreetResponse(freet),
+      canPost
     });
   }
 );
@@ -128,6 +134,40 @@ router.patch(
       message: 'Your freet was updated successfully.',
       freet: util.constructFreetResponse(freet)
     });
+  }
+);
+
+/**
+ * Get most liked freets sorted from most to least liked
+ *
+ * @name GET /api/freets/mostPopular
+ *
+ * @return {FreetResponse[]} - A list of all the freets sorted in descending
+ *                             order by number of likes
+ */
+router.get(
+  '/mostPopular',
+  async (req: Request, res: Response) => {
+    const mostPopularFreets = await FreetCollection.findMostPopular();
+    const response = mostPopularFreets.map(util.constructFreetResponse);
+    res.status(200).json(response);
+  }
+);
+
+/**
+ * Get most approved freets sorted from most to least approved
+ *
+ * @name GET /api/freets/mostCredible
+ *
+ * @return {FreetResponse[]} - A list of all the freets sorted in descending
+ *                             order by number of approves
+ */
+router.get(
+  '/mostCredible',
+  async (req: Request, res: Response) => {
+    const mostCredibleFreets = await FreetCollection.findMostCredible();
+    const response = mostCredibleFreets.map(util.constructFreetResponse);
+    res.status(200).json(response);
   }
 );
 

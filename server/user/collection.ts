@@ -20,9 +20,19 @@ class UserCollection {
    */
   static async addOne(username: string, password: string): Promise<HydratedDocument<User>> {
     const dateJoined = new Date();
-
-    const user = new UserModel({username, password, dateJoined});
-    await user.save(); // Saves user to MongoDB
+    const user = new UserModel({
+      username,
+      password,
+      dateJoined,
+      timeLeft: {
+        total: 3600,
+        hours: 1,
+        minutes: 0,
+        seconds: 0
+      },
+      canPost: true
+    });
+    await user.save();
     return user;
   }
 
