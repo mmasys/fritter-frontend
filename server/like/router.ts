@@ -5,6 +5,7 @@ import * as userValidator from '../user/middleware';
 import * as likeValidator from './middleware';
 import * as freetValidator from '../freet/middleware';
 import {constructLikeResponse} from './util';
+import FreetCollection from '../freet/collection';
 
 const router = express.Router();
 
@@ -39,7 +40,7 @@ router.post(
 /**
  * Remove a like from a freet
  *
- * @name DELETE /api/likes/:id
+ * @name DELETE /api/likes/:freetId
  *
  * @return {string} - A success message if the like is removed, otherwise an error message
  * @throws {403} - If the user is not logged in
@@ -53,7 +54,7 @@ router.delete(
     likeValidator.canUserUnlike
   ],
   async (req: Request, res: Response) => {
-    const {freetId} = req.params;
+    const freetId = req.body.id as string;
     const like = await LikeCollection.deleteOne(req.session.userId, freetId);
     res.status(200).json({
       message: 'You have successfully removed your like from the freet.',
@@ -79,6 +80,29 @@ router.get(
     const userLikes = await LikeCollection.findUserLikedFreets(req.session.userId);
     const response = userLikes.map(like => constructLikeResponse(like));
     res.status(200).json(response);
+  }
+);
+
+/**
+ * Return true if the user has liked this freet, false otherwise.
+ *
+ * @name GET /api/likes/:freetId
+ *
+ * @return {boolean} - True if like exists, false otherwise
+ * @throws {403} - If user is not logged in
+ * @throws {404} - If no freet has given freetId
+ *
+ */
+router.get(
+  '/:freetId?',
+  [userValidator.isUserLoggedIn, likeValidator.isFreetExists],
+  async (req: Request, res: Response) => {
+    const like = await LikeCollection.findLike(req.session.userId, req.body.id);
+    if (like) {
+      res.status(200).json(true);
+    } else {
+      res.status(200).json(false);
+    }
   }
 );
 

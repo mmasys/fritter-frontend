@@ -63,4 +63,27 @@ router.delete(
   }
 );
 
+/**
+ * Return true if the user has disproved this freet, false otherwise.
+ *
+ * @name GET /api/disproves/getDisprove/:freetId
+ *
+ * @return {boolean} - True if disprove exists, false otherwise
+ * @throws {403} - If user is not logged in
+ * @throws {404} - If no freet has given freetId
+ *
+ */
+router.get(
+  '/getDisprove/:freetId?',
+  [userValidator.isUserLoggedIn],
+  async (req: Request, res: Response) => {
+    const disprove = await DisproveCollection.findDisprove(req.session.userId, req.params.freetId);
+    if (disprove) {
+      res.status(200).json(disprove);
+    } else {
+      res.status(200).json(disprove);
+    }
+  }
+);
+
 export {router as disproveRouter};

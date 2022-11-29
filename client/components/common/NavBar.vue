@@ -10,6 +10,14 @@
         Fritter
       </h1>
     </div>
+    <div class="middle">
+      <h1 class="title">
+        <span>{{ limit.hours }}</span>:<span>{{ limit.minutes }}</span>:<span>{{ limit.seconds }}</span>
+      </h1>
+      <h1 class="title">
+        Can Post
+      </h1>
+    </div>
     <div class="right">
       <router-link to="/">
         Home
@@ -38,6 +46,46 @@
     </section>
   </nav>
 </template>
+
+<script>
+  // import TimerComponent from '@/components/common/Timer.vue';
+  
+  export default {
+  name: 'FreetPage',
+  // components: {TimerComponent},
+  data() {
+    return {
+      limit: '',
+    };
+  },
+  mounted() {
+    this.getLimit();
+    // this.decrementLimit();
+  },
+  methods: {
+    async getLimit() {
+      /**
+       * Returns the time left in the user's Fritter Limit.
+       */
+      const url = '/api/limit/getLimit';
+      const r = await fetch(url);
+      const timer = await r.json();
+      this.limit = timer.limit;
+      return this.limit;
+    },
+    async decrementLimit() {
+      /**
+       * Decrement the user's time left by one second.
+       */
+      const url = '/api/limit/decrementLimit';
+      const r = await fetch(url);
+      const timer = await r.json();
+      this.limit = timer.limit;
+      return this.limit;
+    },
+  }
+};
+</script>
 
 <style scoped>
 nav {
@@ -69,6 +117,11 @@ img {
     gap: 16px;
     grid-auto-flow: column;
     align-items: center;
+}
+
+.middle {
+  display: flex;
+  align-items: center;
 }
 
 .right a {

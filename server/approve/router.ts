@@ -40,7 +40,7 @@ router.post(
 /**
  * Remove an approve from a freet
  *
- * @name DELETE /api/approves/removeApprove/:id
+ * @name DELETE /api/approves/removeApprove/:freetId
  *
  * @return {string} - A success message if the approve is removed, otherwise an error message
  * @throws {403} - If the user is not logged in
@@ -60,6 +60,29 @@ router.delete(
       message: 'You have successfully removed your approval from the freet.',
       freetId
     });
+  }
+);
+
+/**
+ * Return true if the user has approved this freet, false otherwise.
+ *
+ * @name GET /api/approves/getApprove/:freetId
+ *
+ * @return {boolean} - True if approve exists, false otherwise
+ * @throws {403} - If user is not logged in
+ * @throws {404} - If no freet has given freetId
+ *
+ */
+router.get(
+  '/getApprove/:freetId?',
+  [userValidator.isUserLoggedIn],
+  async (req: Request, res: Response) => {
+    const approve = await ApproveCollection.findApprove(req.session.userId, req.params.freetId);
+    if (approve) {
+      res.status(200).json(approve);
+    } else {
+      res.status(200).json(approve);
+    }
   }
 );
 

@@ -37,8 +37,9 @@ class ApproveCollection {
     approverId: Types.ObjectId,
     freetId: Types.ObjectId | string
   ): Promise<boolean> {
+    const approve = await ApproveModel.findOne({approverId, freetId});
     const freet = await FreetModel.findOne({_id: freetId});
-    if (freet.approvers.has(approverId) || freet.disprovers.has(approverId)) {
+    if (approve && freet) {
       return true;
     }
 
@@ -124,8 +125,12 @@ class ApproveCollection {
     freetId: Types.ObjectId | string
   ): Promise<boolean> {
     const freet = await FreetModel.findOne({_id: freetId});
-    if (freet.approvers.has(approverId)) {
-      return true;
+    if (freet) {
+      if (freet.approvers.has(approverId)) {
+        return true;
+      }
+
+      return false;
     }
 
     return false;
