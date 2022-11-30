@@ -22,6 +22,8 @@ export default {
         this.$store.commit('alert', {
           message: 'You are now signed in!', status: 'success'
         });
+        this.$store.commit('startLimit');
+        this.$store.commit('startPost');
       }
     };
   }

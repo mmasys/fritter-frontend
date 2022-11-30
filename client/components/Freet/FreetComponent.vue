@@ -48,74 +48,76 @@
     >
       {{ freet.content }}
     </p>
-    <div class="likes">
-      <button
-        v-if="liked"
-        width="25px"
-        @click="removeLike"
-      >
-        <img 
-          :src="require('@/public/liked.png')"
+    <div class="reactions">
+      <div class="singleReaction">
+        <button
+          v-if="liked"
           width="25px"
+          @click="removeLike"
         >
-      </button>
-      <button
-        v-else
-        width="25px"
-        @click="addLike"
-      >
-        <img 
-          :src="require('@/public/like.png')"
+          <img 
+            :src="require('@/public/liked.png')"
+            width="25px"
+          >
+        </button>
+        <button
+          v-else
           width="25px"
+          @click="addLike"
         >
-      </button>
-      <p>{{ freet.likes }}</p>
-    </div>
-    <div class="approve">
-      <button
-        v-if="approved"
-        width="25px"
-        @click="removeApprove"
-      >
-        <img 
-          :src="require('@/public/approveFull.png')"
+          <img 
+            :src="require('@/public/like.png')"
+            width="25px"
+          >
+        </button>
+        <p>{{ freet.likes }}</p>
+      </div>
+      <div class="singleReaction">
+        <button
+          v-if="approved"
           width="25px"
+          @click="removeApprove"
         >
-      </button>
-      <button
-        v-else
-        width="25px"
-        @click="addApprove"
-      >
-        <img 
-          :src="require('@/public/approveBlank.png')"
+          <img 
+            :src="require('@/public/approveFull.png')"
+            width="25px"
+          >
+        </button>
+        <button
+          v-else
           width="25px"
+          @click="addApprove"
         >
-      </button>
-      <p>{{ freet.approves }}</p>
-    </div>
-    <div class="disprove">
-      <button
-        v-if="disproved"
-        width="25px"
-        @click="removeDisprove"
-      >
-        <img 
-          :src="require('@/public/disproveFull.png')"
+          <img 
+            :src="require('@/public/approveBlank.png')"
+            width="25px"
+          >
+        </button>
+        <p>{{ freet.approves }}</p>
+      </div>
+      <div class="singleReaction">
+        <button
+          v-if="disproved"
           width="25px"
+          @click="removeDisprove"
         >
-      </button>
-      <button
-        v-else
-        width="25px"
-        @click="addDisprove"
-      >
-        <img 
-          :src="require('@/public/disproveBlank.png')"
+          <img 
+            :src="require('@/public/disproveFull.png')"
+            width="25px"
+          >
+        </button>
+        <button
+          v-else
           width="25px"
+          @click="addDisprove"
         >
-      </button>
-      <p>{{ freet.disproves }}</p>
+          <img 
+            :src="require('@/public/disproveBlank.png')"
+            width="25px"
+          >
+        </button>
+        <p>{{ freet.disproves }}</p>
+      </div>
     </div>
     <p class="info">
       Posted at {{ freet.dateModified }}
@@ -407,21 +409,16 @@ export default {
     position: relative;
 }
 
-.likes {
+.reactions {
   display: flex;
-  align-content: center;
-  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
 }
 
-.approve {
+.singleReaction {
   display: flex;
   align-content: center;
   align-items: center;
-}
-
-.disprove {
-  display: flex;
-  align-content: center;
-  align-items: center;
+  gap: 5px;
 }
 </style>

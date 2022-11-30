@@ -10,14 +10,9 @@
         Fritter
       </h1>
     </div>
-    <div class="middle">
-      <h1 class="title">
-        <span>{{ limit.hours }}</span>:<span>{{ limit.minutes }}</span>:<span>{{ limit.seconds }}</span>
-      </h1>
-      <h1 class="title">
-        Can Post
-      </h1>
-    </div>
+    <LimitComponent
+      :time-limit="limit"
+    />
     <div class="right">
       <router-link to="/">
         Home
@@ -48,11 +43,11 @@
 </template>
 
 <script>
-  // import TimerComponent from '@/components/common/Timer.vue';
+  import LimitComponent from '@/components/common/LimitComponent.vue';
   
   export default {
   name: 'FreetPage',
-  // components: {TimerComponent},
+  components: {LimitComponent},
   data() {
     return {
       limit: '',
