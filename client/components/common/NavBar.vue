@@ -5,7 +5,7 @@
 <template>
   <nav>
     <div class="left">
-      <img src="../../public/logo.svg">
+      <img src="../../public/fritterLogo.png">
       <h1 class="title">
         Fritter
       </h1>
@@ -14,18 +14,23 @@
       :time-limit="limit"
     />
     <div class="right">
-      <router-link to="/">
+      <router-link 
+        to="/" 
+        class="link"
+      >
         Home
       </router-link>
       <router-link
         v-if="$store.state.username"
         to="/account"
+        class="link"
       >
         Account
       </router-link>
       <router-link
         v-else
         to="/login"
+        class="link"
       >
         Login
       </router-link>
@@ -85,11 +90,13 @@
 <style scoped>
 nav {
     padding: 1vw 2vw;
-    background-color: #ccc;
+    background-color: #243447;
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: relative;
+    color: #FFF;
+    border-bottom: 1px solid #657786;
 }
 
 .title {
@@ -112,6 +119,7 @@ img {
     gap: 16px;
     grid-auto-flow: column;
     align-items: center;
+    color: #FFF;
 }
 
 .middle {
@@ -125,5 +133,9 @@ img {
 
 .alerts {
     width: 25%;
+}
+
+.link {
+    color: #1DA1F2;
 }
 </style>

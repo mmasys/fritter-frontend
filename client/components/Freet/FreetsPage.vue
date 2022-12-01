@@ -1,7 +1,7 @@
 <!-- Default page that also displays freets -->
 
 <template>
-  <main>
+  <main class="main">
     <section v-if="$store.state.username">
       <header>
         <h2>Welcome @{{ $store.state.username }}</h2>
@@ -14,7 +14,10 @@
       </header>
       <article>
         <h3>
-          <router-link to="/login">
+          <router-link 
+            to="/login"
+            class="link"
+          >
             Sign in
           </router-link>
           to create, edit, and delete freets.
@@ -150,5 +153,14 @@ section .scrollbox {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.main {
+  background-color: #243447;
+  color: #FFF;
+}
+
+.link {
+  color: #1DA1F2;
 }
 </style>

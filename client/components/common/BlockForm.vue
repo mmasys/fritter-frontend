@@ -32,6 +32,7 @@
     </article>
     <button
       type="submit"
+      class="button"
     >
       {{ title }}
     </button>
@@ -117,7 +118,7 @@ export default {
 
 <style scoped>
 form {
-  border: 1px solid #111;
+  border: 1px solid #657786;
   padding: 0.5rem;
   display: flex;
   flex-direction: column;
@@ -147,5 +148,12 @@ form h3 {
 textarea {
    font-family: inherit;
    font-size: inherit;
+}
+
+.button {
+  background-color: #1DA1F2;
+  color: #FFF;
+  border-radius: 12px;
+  border-color: #1DA1F2;
 }
 </style>

@@ -13,6 +13,7 @@ import {likeRouter} from '../server/like/router';
 import {approveRouter} from '../server/approve/router';
 import {disproveRouter} from '../server/disprove/router';
 import {limitRouter} from '../server/limit/router';
+import {followRouter} from '../server/follow/router';
 import MongoStore from 'connect-mongo';
 
 // Load environmental variables
@@ -78,6 +79,7 @@ app.use('/api/likes', likeRouter);
 app.use('/api/approves', approveRouter);
 app.use('/api/disproves', disproveRouter);
 app.use('/api/limit', limitRouter);
+app.use('/api/follow', followRouter);
 
 // Catch all the other routes and display error message
 app.all('*', (req: Request, res: Response) => {

@@ -2,7 +2,7 @@
 <!-- User should be NOT authenticated in order to see this page -->
 
 <template>
-  <main>
+  <main class="main">
     <section>
       <header>
         <h2>New to Fritter?</h2>
@@ -30,3 +30,14 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.main {
+  background-color: #243447;
+  color: #FFF;
+  display: grid;
+  height: 100%;
+  width: 100%;
+}
+
+</style>

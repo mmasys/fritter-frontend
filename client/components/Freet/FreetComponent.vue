@@ -5,35 +5,48 @@
   <article
     class="freet"
   >
-    <header>
+    <header class="header">
       <h3 class="author">
         @{{ freet.author }}
       </h3>
-      <div
-        v-if="$store.state.username === freet.author"
-        class="actions"
-      >
-        <button
-          v-if="editing"
-          @click="submitEdit"
+      <div>
+        <div
+          v-if="$store.state.username === freet.author"
+          class="actions"
         >
-          ✅ Save changes
-        </button>
-        <button
-          v-if="editing"
-          @click="stopEditing"
-        >
-          🚫 Discard changes
-        </button>
-        <button
-          v-if="!editing"
-          @click="startEditing"
-        >
-          ✏️ Edit
-        </button>
-        <button @click="deleteFreet">
-          🗑️ Delete
-        </button>
+          <button
+            v-if="editing"
+            @click="submitEdit"
+          >
+            ✅ Save changes
+          </button>
+          <button
+            v-if="editing"
+            @click="stopEditing"
+          >
+            🚫 Discard changes
+          </button>
+          <button
+            v-if="!editing"
+            @click="startEditing"
+          >
+            ✏️ Edit
+          </button>
+          <button 
+            @click="deleteFreet"
+          >
+            🗑️ Delete
+          </button>
+        </div>
+        <div v-else>
+          <button
+            v-if="$store.state.username"
+            class="followButton"
+            @click="followUser"
+          >
+            Follow
+          </button>
+        </div>
       </div>
     </header>
     <textarea
@@ -51,8 +64,8 @@
     <div class="reactions">
       <div class="singleReaction">
         <button
-          v-if="liked"
-          width="25px"
+          v-if="(liked && $store.state.username)"
+          class="reactionButtons"
           @click="removeLike"
         >
           <img 
@@ -62,7 +75,7 @@
         </button>
         <button
           v-else
-          width="25px"
+          class="reactionButtons"
           @click="addLike"
         >
           <img 
@@ -74,8 +87,8 @@
       </div>
       <div class="singleReaction">
         <button
-          v-if="approved"
-          width="25px"
+          v-if="(approved && $store.state.username)"
+          class="reactionButtons"
           @click="removeApprove"
         >
           <img 
@@ -85,7 +98,7 @@
         </button>
         <button
           v-else
-          width="25px"
+          class="reactionButtons"
           @click="addApprove"
         >
           <img 
@@ -97,8 +110,8 @@
       </div>
       <div class="singleReaction">
         <button
-          v-if="disproved"
-          width="25px"
+          v-if="(disproved && $store.state.username)"
+          class="reactionButtons"
           @click="removeDisprove"
         >
           <img 
@@ -113,6 +126,7 @@
         >
           <img 
             :src="require('@/public/disproveBlank.png')"
+            class="image"
             width="25px"
           >
         </button>
@@ -152,7 +166,8 @@ export default {
       alerts: {}, // Displays success/error messages encountered during freet modification
       liked: '', // Whether or not a freet has been liked by the user
       approved: '', // Whether or not a freet has been approved by the user
-      disproved: '' // Whether or not a freet has been disproved by the user
+      disproved: '', // Whether or not a freet has been disproved by the user
+      user: '', // The author of this freet
     };
   },
   computed: {
@@ -371,6 +386,24 @@ export default {
       };
       this.request(params);
     },
+    followUser() {
+      /**
+       * Follow this user.
+       */
+      const params = {
+        method: 'POST',
+        message: 'Successfully followed this user!',
+        url: 'api/follow',
+        body: JSON.stringify({id: this.freet.author}),
+        callback: () => {
+          this.$set(this.alerts, params.message, "success");
+          setTimeout(() => this.$delete(this.alerts, params.message), 3000);
+          this.$store.commit('refreshFreets');
+          this.user = this.freet.author;
+        }
+      };
+      this.request(params);
+    },
     async request(params) {
       /**
        * Submits a request to the freet's endpoint
@@ -404,21 +437,36 @@ export default {
 
 <style scoped>
 .freet {
-    border: 1px solid #111;
+    border: 1px solid #657786;
     padding: 20px;
     position: relative;
 }
 
+.header {
+  display: flex;
+  justify-content: space-between;
+}
 .reactions {
   display: flex;
   justify-content: flex-start;
   gap: 10px;
 }
 
+.actions {
+  display: grid;
+}
 .singleReaction {
   display: flex;
   align-content: center;
   align-items: center;
   gap: 5px;
+}
+
+.reactionButtons {
+  width: "25px";
+}
+
+.followButton {
+  width: 100%;
 }
 </style>

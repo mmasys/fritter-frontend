@@ -2,10 +2,16 @@
 <!-- User should be authenticated in order to see this page -->
 
 <template>
-  <main>
+  <main class="main">
     <section>
+      <section>
+        <header>
+          <h2>Profile Page</h2>
+        </header>
+        <UserFollowerPage />
+      </section>
       <header>
-        <h2>Account settings for @{{ $store.state.username }}</h2>
+        <h2>Account settings</h2>
       </header>
       <ChangeUsernameForm />
       <ChangePasswordForm />
@@ -25,6 +31,7 @@ import ChangeUsernameForm from '@/components/Account/ChangeUsernameForm.vue';
 import ChangePasswordForm from '@/components/Account/ChangePasswordForm.vue';
 import DeleteAccountForm from '@/components/Account/DeleteAccountForm.vue';
 import LogoutForm from '@/components/Account/LogoutForm.vue';
+import UserFollowerPage from '@/components/Account/UserFollowerPage.vue'
 
 export default {
   name: 'AccountPage',
@@ -32,7 +39,18 @@ export default {
     ChangeUsernameForm,
     ChangePasswordForm,
     DeleteAccountForm,
-    LogoutForm
+    LogoutForm,
+    UserFollowerPage
   }
 };
 </script>
+
+<style scoped>
+.main {
+  background-color: #243447;
+  color: #FFF;
+  display: grid;
+  height: 100%;
+  width: 100%;
+}
+</style>
